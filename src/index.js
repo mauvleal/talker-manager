@@ -6,6 +6,7 @@ const { verifyTalk, verifyTalk2 } = require('./middlewares/verifyTalk');
 const verifyTalker = require('./middlewares/verifyTalker');
 const verifyToken = require('./middlewares/verifyToken');
 const writeNewTalker = require('./utils/fsWriteFiles');
+const deleteTalker = require('./utils/fsDeleteFile');
 
 const app = express();
 app.use(bodyParser.json());
@@ -56,13 +57,11 @@ app.post('/talker', verifyToken, verifyTalker, verifyTalk, verifyTalk2,
       return response.status(201).json(toCreate);
 });
 
-// app.delete('/talker/:id', async (request, response) => {
-// const { id } = request.params;
-//   let data = await readFileTalker();
-//   const newInfo = data.filter((elem) => elem.id !== Number(id));
-//   data = newInfo;
-//   return response.status(204).json(data);
-// });
+app.delete('/talker/:id', verifyToken, async (request, response) => {
+const { id } = request.params;
+const upDateTalkers = await deleteTalker(Number(id));
+  return response.status(204).json(upDateTalkers);
+});
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
