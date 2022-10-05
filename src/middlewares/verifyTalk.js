@@ -11,7 +11,7 @@ function verifyTalk(request, response, next) {
   if (!talk.watchedAt) {
   return response.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
   }
-  if (!talk.rate) {
+  if (!talk.rate && talk.rate !== 0) {
     return response.status(400).json({ message: 'O campo "rate" é obrigatório' });
     }
     
@@ -28,6 +28,7 @@ function verifyTalk2(request, response, next) {
   }
   next();
 }
+
 module.exports = {
   verifyTalk,
   verifyTalk2,
